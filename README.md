@@ -1,6 +1,6 @@
 # Event Management System (CSE 412)
 
-## 📌 Project Overview
+##  Project Overview
 This project is a web-based Event Management System built using Flask and PostgreSQL.  
 It demonstrates how a relational database schema (designed in Phase 2) can be integrated into a working application.
 
@@ -12,7 +12,7 @@ The system allows users to:
 
 ---
 
-## 🗄️ Database Design
+##  Database Design
 This project implements the following tables:
 
 - Organizer
@@ -31,7 +31,7 @@ Key features:
 
 ---
 
-## ⚙️ Requirements
+##  Requirements
 
 - Python 3.x
 - PostgreSQL
@@ -39,7 +39,7 @@ Key features:
 
 ---
 
-## 🚀 Setup Instructions
+##  Setup Instructions
 
 ### 1. Install dependencies
 
