@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Management System</title>
+</head>
+<body>
+
+<h1>Event Management System</h1>
+
+<h2>Add Event</h2>
+<form method="POST" action="/add_event">
+    Name: <input name="name">
+    Status: <input name="status" value="Active">
+    <button type="submit">Create Event</button>
+</form>
+
+<h2>Events</h2>
+<ul>
+{% for e in events %}
+    <li>
+        <b>{{ e[1] }}</b> ({{ e[2] }}) <br>
+        Organizer: {{ e[7] }} <br>
+        Location: {{ e[3] }} {{ e[4] }} <br>
+        Time: {{ e[5] }} {{ e[6] }} <br>
+
+        {% if e[2] != 'Cancelled' %}
+        <form method="POST" action="/register">
+            <input type="hidden" name="event_id" value="{{ e[0] }}">
+            Name: <input name="name">
+            Phone: <input name="phone">
+            <button type="submit">Register</button>
+        </form>
+        {% else %}
+        <p style="color:red;">Registration Closed</p>
+        {% endif %}
+
+        <a href="/active/{{ e[0] }}">Set Active</a> |
+        <a href="/cancel/{{ e[0] }}">Cancel Event</a>
+    </li><br>
+{% endfor %}
+</ul>
+
+<h2>Students</h2>
+<ul>
+{% for key, events_list in students.items() %}
+    <li>Name: {{ key[0] }}, Phone: {{ key[1] }} - Events: {{ ", ".join(events_list) }}</li>
+{% endfor %}
+</ul>
+
+</body>
+</html>
