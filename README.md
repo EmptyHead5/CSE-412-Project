@@ -32,8 +32,6 @@ Key features:
 ---
 
 
----
-
 ##  Setup Instructions
 
 ### 1. Install dependencies
