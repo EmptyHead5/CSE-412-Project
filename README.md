@@ -31,11 +31,6 @@ Key features:
 
 ---
 
-##  Requirements
-
-- Python 3.x
-- PostgreSQL
-- pip
 
 ---
 
