@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ASU Student Event Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #8C1D40;
+            --gold: #FFC627;
+            --dark: #1a1a1a;
+            --surface: #fafafa;
+            --card: #ffffff;
+            --border: #e8e0e2;
+            --text: #2a2a2a;
+            --muted: #7a6870;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Barlow', sans-serif; background: var(--surface); color: var(--text); }
+
+        header {
+            background: var(--maroon);
+            padding: 0 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            box-shadow: 0 2px 12px rgba(140,29,64,0.3);
+        }
+
+        .logo-mark { background: var(--gold); color: var(--maroon); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; padding: 4px 10px; }
+        header h1 { font-family: 'Barlow Condensed', sans-serif; color: white; font-size: 1.2rem; text-transform: uppercase; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+        .section-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--maroon);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .event-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--gold);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .event-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .event-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 700; }
+        
+        .event-details { display: flex; gap: 1.5rem; font-size: 0.9rem; color: var(--muted); }
+
+        .reg-box {
+            background: #fdf8f9;
+            padding: 1rem;
+            border-radius: 4px;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; }
+        .form-group label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--muted); }
+        input { padding: 0.5rem; border: 1px solid var(--border); width: 100%; }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--maroon);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        
+        .btn-gold:hover { background: #e6b020; }
+        
+        .nav-link { color: var(--maroon); text-decoration: none; font-size: 0.8rem; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="display:flex; align-items:center; gap:10px;">
+        <div class="logo-mark">ASU</div>
+    </div>
+</header>
+
+<div class="container">
+    <h2 class="section-title">Available Events</h2>
+
+    {% for e in events %}
+    <div class="event-card">
+    <div class="event-header">
+        <div>
+            <div class="event-name">{{ e[1] }}</div>
+            <div class="event-details">
+                <span>📍 {{ e[2] }} {{ e[3] }}</span>
+                <span>📅 {{ e[4] }}</span>
+                <span>⏰ {{ e[5] }}</span>
+            </div>
+        </div>
+    </div>
+
+    {% if e[0] in my_event_ids %}
+        <div style="background: #e8f5e9; border: 1px solid #2e7d32; padding: 1.25rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
+            <div>
+                <span style="color: #2e7d32; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; letter-spacing: 0.05em;">
+                    ✓ YOU ARE REGISTERED
+                </span>
+            </div>
+            
+            <form method="POST" action="/cancel_registration">
+                <input type="hidden" name="event_id" value="{{ e[0] }}">
+                <button type="submit" class="btn-outline" 
+                        style="border: 1px solid #c0392b; color: #c0392b; background: transparent; padding: 6px 12px; cursor: pointer; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; font-size: 0.8rem;"
+                        onclick="return confirm('Are you sure you want to cancel your registration for this event?')">
+                    Cancel Registration
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <form method="POST" action="/register" class="reg-box">
+            <input type="hidden" name="event_id" value="{{ e[0] }}">
+            
+            <div class="form-group">
+                <label>ASU ID</label>
+                <input name="asurite_id" placeholder="e.g. bjackso5" value="{{ session.get('user_asurite', '') }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Full Name</label>
+                <input name="name" placeholder="Enter your name" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Phone</label>
+                <input name="phone" placeholder="480-000-0000" required>
+            </div>
+            
+            <button type="submit" class="btn-gold">Register Now</button>
+        </form>
+    {% endif %}
+</div>
+    {% else %}
+        <p style="text-align:center; color:var(--muted);">No active events at this time.</p>
+    {% endfor %}
+</div>
+
+</body>
+</html>

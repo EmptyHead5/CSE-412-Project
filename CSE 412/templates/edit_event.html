@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Edit Event | ASU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --maroon: #8C1D40; --gold: #FFC627; --surface: #fafafa; }
+        body { font-family: 'Barlow', sans-serif; background: var(--surface); padding: 40px; }
+        .edit-card { background: white; max-width: 600px; margin: 0 auto; padding: 2rem; border-top: 4px solid var(--maroon); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 1.5rem; display: flex; flex-direction: column; }
+        label { font-weight: 600; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; color: #555; }
+        input, select { padding: 10px; border: 1px solid #ddd; font-size: 1rem; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .btn { padding: 10px 20px; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase; text-decoration: none; text-align: center; }
+        .btn-save { background: var(--maroon); color: white; }
+        .btn-cancel { background: #eee; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="edit-card">
+        <h2 style="font-family: 'Barlow Condensed'; margin-bottom: 20px;">Edit Event: {{ event[0] }}</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label>Event Name</label>
+                <input type="text" name="name" value="{{ event[0] }}" required>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status">
+                    <option value="Active" {% if event[1] == 'Active' %}selected{% endif %}>Active</option>
+                    <option value="Cancelled" {% if event[1] == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Building</label>
+                <input type="text" name="location" value="{{ event[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label>Room</label>
+                <input type="text" name="room" value="{{ event[3] }}">
+            </div>
+            <div class="form-group">
+                <label>Max Capacity</label>
+                <input type="number" name="max_limit" value="{{ event[4] or '' }}">
+            </div>
+            <div class="btn-group">
+                <button type="submit" class="btn btn-save">Save Changes</button>
+                <a href="/" class="btn btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+2026-04-30 20:59:32.612 MST [5370] FATAL:  lock file "postmaster.pid" already exists
+2026-04-30 20:59:32.612 MST [5370] HINT:  Is another postmaster (PID 30805) running in data directory "/Users/nickogle/db412"?
+2026-04-30 21:01:18.298 MST [5781] FATAL:  pre-existing shared memory block (key 1493477, ID 65537) is still in use
+2026-04-30 21:01:18.298 MST [5781] HINT:  Terminate any old server processes associated with data directory "/Users/nickogle/db412".
+2026-04-30 21:01:18.299 MST [5781] LOG:  database system is shut down
