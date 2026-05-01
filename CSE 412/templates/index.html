@@ -1,57 +1,541 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Event Management System</title>
+    <title>ASU Event Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #8C1D40;
+            --gold: #FFC627;
+            --dark: #1a1a1a;
+            --surface: #fafafa;
+            --card: #ffffff;
+            --border: #e8e0e2;
+            --text: #2a2a2a;
+            --muted: #7a6870;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--surface);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--maroon);
+            padding: 0 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 12px rgba(140,29,64,0.3);
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-mark {
+            background: var(--gold);
+            color: var(--maroon);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 4px 10px;
+            letter-spacing: 0.05em;
+        }
+
+        header h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: white;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .header-badge {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem;
+        }
+
+        /* Section titles */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--maroon);
+        }
+
+        .section-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--maroon), transparent);
+        }
+
+        /* Add Event Form */
+        .add-event-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-top: 3px solid var(--maroon);
+            padding: 1.75rem 2rem;
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+        }
+
+        input[type="text"], input:not([type="submit"]):not([type="hidden"]) {
+            border: 1px solid var(--border);
+            padding: 0.55rem 0.75rem;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            background: white;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        input:focus {
+            border-color: var(--maroon);
+        }
+
+        .btn {
+            display: inline-block;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+
+        .btn-primary {
+            background: var(--maroon);
+            color: white;
+        }
+        .btn-primary:hover { background: #6e1632; }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--maroon);
+        }
+        .btn-gold:hover { background: #e6b020; }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--maroon);
+            border: 1px solid var(--maroon);
+        }
+        .btn-outline:hover { background: var(--maroon); color: white; }
+
+        .btn-danger {
+            background: transparent;
+            color: #c0392b;
+            border: 1px solid #c0392b;
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+        }
+        .btn-danger:hover { background: #c0392b; color: white; }
+
+        .btn-sm {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+        }
+
+        /* Events grid */
+        .events-grid {
+            display: grid;
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .event-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .event-card:hover {
+            box-shadow: 0 4px 20px rgba(140,29,64,0.1);
+        }
+
+        .event-card-left {
+            padding: 1.5rem 1.75rem;
+            border-left: 4px solid var(--maroon);
+        }
+
+        .event-card.cancelled .event-card-left {
+            border-left-color: #bbb;
+        }
+
+        .event-meta-top {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: 0.02em;
+        }
+
+        .status-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+        }
+
+        .status-active {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-cancelled {
+            background: #f5f5f5;
+            color: #888;
+        }
+
+        .event-details {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .event-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .detail-icon {
+            font-size: 0.8rem;
+        }
+
+        /* Register form inside card */
+        .register-form {
+            background: #fdf8f9;
+            border-top: 1px solid var(--border);
+            padding: 1rem 1.75rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .register-form .form-group {
+            min-width: 120px;
+        }
+
+        .register-form input {
+            padding: 0.45rem 0.65rem;
+            font-size: 0.85rem;
+        }
+
+        .closed-bar {
+            background: #f5f5f5;
+            border-top: 1px solid var(--border);
+            padding: 0.75rem 1.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* Event card right side — actions */
+        .event-card-actions {
+            background: #f9f4f6;
+            border-left: 1px solid var(--border);
+            padding: 1.25rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: stretch;
+            justify-content: center;
+            min-width: 130px;
+        }
+
+        .event-card-actions form,
+        .event-card-actions a {
+            display: block;
+            width: 100%;
+        }
+
+        .event-card-actions .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Students table */
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+
+        .students-table th {
+            background: var(--maroon);
+            color: white;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.75rem 1.25rem;
+            text-align: left;
+        }
+
+        .students-table td {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.875rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .students-table tr:last-child td { border-bottom: none; }
+        .students-table tr:hover td { background: #fdf8f9; }
+
+        .asurite-tag {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            background: #f3eef0;
+            color: var(--maroon);
+            padding: 2px 8px;
+            letter-spacing: 0.05em;
+        }
+
+        .event-tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #555;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            margin: 2px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+            border: 1px dashed var(--border);
+            background: white;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Event Management System</h1>
+<header>
+    <div class="header-logo">
+        <div class="logo-mark">ASU</div>
+        <h1>Event Management</h1>
+    </div>
+    <span class="header-badge">CSE 412 · Spring 2026</span>
+</header>
 
-<h2>Add Event</h2>
-<form method="POST" action="/add_event">
-    Name: <input name="name"><br>
-    Status: <input name="status" value="Active"><br>
-    Organizer Name: <input name="organizer_name"><br>
-    Location: <input name="location"><br>
-    Room: <input name="room"><br>
+<div class="container">
+    {% if request.args.get('error') == 'already_registered' %}
+    <div style="background:#fdecea; border-left:4px solid #c0392b; padding:0.75rem 1.25rem; margin-bottom:1.5rem; font-size:0.875rem; color:#c0392b; font-weight:500;">
+        ⚠ That ASU ID is already registered for this event.
+    </div>
+    {% endif %}
 
+    <!-- Add Event -->
+    <div class="section-header">
+        <span class="section-title">Add Event</span>
+        <div class="section-line"></div>
+    </div>
 
+    <form method="POST" action="/add_event">
+        <div class="add-event-card">
+            <div class="form-group">
+                <label>Event Name</label>
+                <input name="name" placeholder="e.g. Spring Hackathon">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <input name="status" value="Active">
+            </div>
+            <div class="form-group">
+                <label>Organizer</label>
+                <input name="organizer_name" placeholder="e.g. CIDSE">
+            </div>
+            <div class="form-group">
+                <label>Building</label>
+                <input name="location" placeholder="e.g. BYENG">
+            </div>
+            <div class="form-group">
+                <label>Room</label>
+                <input name="room" placeholder="e.g. 210">
+            </div>
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn btn-primary">+ Create Event</button>
+            </div>
+        </div>
+    </form>
 
-    <button type="submit">Create Event</button>
-</form>
+    <!-- Events -->
+    <div class="section-header">
+        <span class="section-title">Events</span>
+        <div class="section-line"></div>
+    </div>
 
-<h2>Events</h2>
-<ul>
-{% for e in events %}
-    <li>
-        <b>{{ e[1] }}</b> ({{ e[2] }}) <br>
-        Organizer: {{ e[7] }} <br>
-        Location: {{ e[3] }} {{ e[4] }} <br>
-        Time: {{ e[5] }} {{ e[6] }} <br>
+    <div class="events-grid">
+    {% for e in events %}
+        <div class="event-card {% if e[2] == 'Cancelled' %}cancelled{% endif %}">
+            <div>
+                <div class="event-card-left">
+                    <div class="event-meta-top">
+                        <span class="event-name">{{ e[1] }}</span>
+                        <span class="status-badge {% if e[2] == 'Cancelled' %}status-cancelled{% else %}status-active{% endif %}">
+                            {{ e[2] }}
+                        </span>
+                    </div>
+                    <div class="event-details">
+                        <span class="event-detail">Organizer: {{ e[7] or 'N/A' }}</span>
+                        <span class="event-detail">Location: {{ e[3] or '—' }} {{ e[4] or '' }}</span>
+                        <span class="event-detail">Date: {{ e[5] or 'TBD' }}</span>
+                        <span class="event-detail">Time: {{ e[6] or 'TBD' }}</span>
+                    </div>
+                </div>
 
-        {% if e[2] != 'Cancelled' %}
-        <form method="POST" action="/register">
-            <input type="hidden" name="event_id" value="{{ e[0] }}">
-            Name: <input name="name">
-            Phone: <input name="phone">
-            <button type="submit">Register</button>
-        </form>
-        {% else %}
-        <p style="color:red;">Registration Closed</p>
-        {% endif %}
-        <form method="POST" action="/delete"> </form>
-        <a href="/active/{{ e[0] }}">Set Active</a> |
-        <a href="/cancel/{{ e[0] }}">Cancel Event</a>
-    </li><br>
-{% endfor %}
-</ul>
+                {% if e[2] != 'Cancelled' %}
+                <div class="register-form">
+                    <form method="POST" action="/register" style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:flex-end; width:100%;">
+                        <input type="hidden" name="event_id" value="{{ e[0] }}">
+                        <div class="form-group">
+                            <label>ASU ID</label>
+                            <input name="asurite_id" placeholder="bjackso5">
+                        </div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input name="name" placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input name="phone" placeholder="480-000-0000">
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn btn-gold">Register</button>
+                        </div>
+                    </form>
+                </div>
+                {% else %}
+                <div class="closed-bar">⛔ Registration Closed</div>
+                {% endif %}
+            </div>
 
-<h2>Students</h2>
-<ul>
-{% for key, events_list in students.items() %}
-    <li>Name: {{ key[0] }}, Phone: {{ key[1] }} - Events: {{ ", ".join(events_list) }}</li>
-{% endfor %}
-</ul>
+            <div class="event-card-actions">
+                <a href="/active/{{ e[0] }}" class="btn btn-outline btn-sm">Set Active</a>
+                <a href="/cancel/{{ e[0] }}" class="btn btn-outline btn-sm">Close Reg.</a>
+                <form method="POST" action="/delete/{{ e[0] }}">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Permanently delete this event?')">Delete</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-state">No events yet. Add one above.</div>
+    {% endfor %}
+    </div>
 
+    <!-- Registered Students -->
+    <div class="section-header">
+        <span class="section-title">Registered Students</span>
+        <div class="section-line"></div>
+    </div>
+
+    {% if students %}
+    <table class="students-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ASU ID</th>
+                <th>Registered Events</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key, events_list in students.items() %}
+            <tr>
+                <td>{{ key[0] }}</td>
+                <td><span class="asurite-tag">{{ key[1] }}</span></td>
+                <td>
+                    {% for ev in events_list %}
+                        <span class="event-tag">{{ ev }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="empty-state">No students registered yet.</div>
+    {% endif %}
+
+</div>
 </body>
 </html>
