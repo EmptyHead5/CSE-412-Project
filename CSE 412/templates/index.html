@@ -403,15 +403,12 @@
     </div>
     {% endif %}
 
-<<<<<<< HEAD
-=======
     {% if request.args.get('error') == 'event_full' %}
     <div style="background:#fff3cd; border-left:4px solid #856404; padding:0.75rem 1.25rem; margin-bottom:1.5rem; font-size:0.875rem; color:#856404; font-weight:500;">
         ⚠ Registration failed: This event has reached its maximum capacity.
     </div>
     {% endif %}
 
->>>>>>> 6728e54 (Added user html file and small tweaks)
     <!-- Add Event -->
     <div class="section-header">
         <span class="section-title">Add Event</span>
@@ -441,8 +438,6 @@
                 <input name="room" placeholder="e.g. 210">
             </div>
             <div class="form-group">
-<<<<<<< HEAD
-=======
                 <label>Start Time</label>
                 <input type="time" name="start_time" value="09:00" required>
             </div>
@@ -451,7 +446,6 @@
                 <input type="number" name="max_limit" placeholder="e.g. 50" min="1">
             </div>
             <div class="form-group">
->>>>>>> 6728e54 (Added user html file and small tweaks)
                 <label>&nbsp;</label>
                 <button type="submit" class="btn btn-primary">+ Create Event</button>
             </div>
@@ -506,20 +500,11 @@
                     </form>
                 </div>
                 {% else %}
-<<<<<<< HEAD
-                <div class="closed-bar">⛔ Registration Closed</div>
-=======
                 <div class="closed-bar">⛔ Event Cancelled</div>
->>>>>>> 6728e54 (Added user html file and small tweaks)
                 {% endif %}
             </div>
 
             <div class="event-card-actions">
-<<<<<<< HEAD
-                <a href="/active/{{ e[0] }}" class="btn btn-outline btn-sm">Set Active</a>
-                <a href="/cancel/{{ e[0] }}" class="btn btn-outline btn-sm">Close Reg.</a>
-                <form method="POST" action="/delete/{{ e[0] }}">
-=======
                 {% if e[2] == 'Cancelled' %}
                     <a href="/active/{{ e[0] }}" class="btn btn-gold btn-sm">Set Active</a>
                 {% else %}
@@ -529,7 +514,6 @@
                 <a href="/edit/{{ e[0] }}" class="btn btn-sm" style="background: #e0e0e0; color: #333; margin-top: 5px; text-decoration: none;">Edit Details</a>
                 
                 <form method="POST" action="/delete/{{ e[0] }}" style="margin-top: 5px;">
->>>>>>> 6728e54 (Added user html file and small tweaks)
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Permanently delete this event?')">Delete</button>
                 </form>
             </div>
